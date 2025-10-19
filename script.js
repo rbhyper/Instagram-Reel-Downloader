@@ -1,5 +1,5 @@
-const API_KEY = "10782|YMuI0eDcvypJi5EEYbctFPbZrjzSqjEJTCXPUVnv";
-const API_ENDPOINT = "https://www.zylalabs.com/api/7709/instagram+reel+downloader+api/12502/download+all+content";
+const API_KEY = "10782|YMuI0eDcvypJi5EEYbctFPbZrjzSqjEJTCXPUVnv"; // Change
+const API_ENDPOINT = "https://www.zylalabs.com/api/7709/instagram+reel+downloader+api/12502/download+all+content"; //Change
 
 // Fetch data from ZylaLabs API
 async function fetchReelData(url) {
