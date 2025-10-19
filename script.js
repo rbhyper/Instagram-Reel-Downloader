@@ -1,10 +1,16 @@
+const API_KEY = "10782|YMuI0eDcvypJi5EEYbctFPbZrjzSqjEJTCXPUVnv";  // Replace with tomer key
+const API_ENDPOINT = "https://www.zylalabs.com/api/7709/instagram+reel+downloader+api/12502/download+all+content";
+
 async function fetchReelData(url) {
-  // Replace with your actual API endpoint
-  const apiURL = `https://your-api-url.com/api/download?url=${encodeURIComponent(url)}`;
-
-  const response = await fetch(apiURL);
-  if (!response.ok) throw new Error("Failed to fetch data");
-
+  const fullUrl = `${API_ENDPOINT}?url=${encodeURIComponent(url)}`;
+  const response = await fetch(fullUrl, {
+    headers: {
+      "Authorization": `Bearer ${API_KEY}`
+    }
+  });
+  if (!response.ok) {
+    throw new Error("API request failed: " + response.status);
+  }
   const data = await response.json();
   return data;
 }
@@ -23,21 +29,21 @@ async function downloadReel() {
   try {
     const data = await fetchReelData(reelURL);
 
-    if (data.success && data.download_url) {
+    // Assuming response structure: data.media is array
+    if (data.media && data.media.length > 0 && data.media[0].download_url) {
       const a = document.createElement("a");
-      a.href = data.download_url;
+      a.href = data.media[0].download_url;
       a.download = "instagram-reel.mp4";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-
       statusDiv.innerText = "✅ Video download started!";
     } else {
-      statusDiv.innerText = "❌ Could not get video.";
+      statusDiv.innerText = "❌ Could not get video. Response: " + JSON.stringify(data);
     }
   } catch (error) {
     console.error(error);
-    statusDiv.innerText = "❌ Error fetching video.";
+    statusDiv.innerText = "❌ Error fetching video: " + error.message;
   }
 }
 
@@ -56,18 +62,16 @@ async function downloadThumbnail() {
   try {
     const data = await fetchReelData(reelURL);
 
-    if (data.success && data.thumbnail_url) {
+    if (data.media && data.media.length > 0 && data.media[0].thumbnail) {
       const img = document.createElement("img");
-      img.src = data.thumbnail_url;
+      img.src = data.media[0].thumbnail;
       img.alt = "Reel Thumbnail";
 
-      // Clear previous thumbnail
       previewDiv.innerHTML = "";
       previewDiv.appendChild(img);
 
-      // Download
       const a = document.createElement("a");
-      a.href = data.thumbnail_url;
+      a.href = data.media[0].thumbnail;
       a.download = "reel-thumbnail.jpg";
       document.body.appendChild(a);
       a.click();
@@ -75,10 +79,10 @@ async function downloadThumbnail() {
 
       statusDiv.innerText = "✅ Thumbnail download started!";
     } else {
-      statusDiv.innerText = "❌ Could not fetch thumbnail.";
+      statusDiv.innerText = "❌ Could not fetch thumbnail. Response: " + JSON.stringify(data);
     }
   } catch (error) {
     console.error(error);
-    statusDiv.innerText = "❌ Error fetching thumbnail.";
+    statusDiv.innerText = "❌ Error fetching thumbnail: " + error.message;
   }
 }
