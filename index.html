@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Instagram Reel Downloader</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>📥 Instagram Reel Downloader</h1>
+    <input type="text" id="reelURL" placeholder="Paste Instagram Reel URL here" />
+    
+    <div class="buttons">
+      <button onclick="downloadReel()">Download Video</button>
+      <button onclick="downloadThumbnail()">Download Thumbnail</button>
+    </div>
+
+    <div id="status"></div>
+    <div id="thumbnailPreview"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
